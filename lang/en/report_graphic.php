@@ -34,3 +34,5 @@ $string['percentage'] = 'Percentage';
 $string['pluginname'] = 'Events Graphic Report';
 $string['quantity'] = 'quantity';
 $string['usersactivity'] = 'User Activity (Events by Top 10 Users)';
+$string['courseusage'] = 'Top 10 Courses Been Taken (Non-graded,Completed,Incompleted';
+?>

@@ -58,6 +58,8 @@ class report_graphic_renderable implements renderable {
      */
     public $mostactivecourses;
 
+    public $courseusage;
+
     /**
      * Constructor.
      *
@@ -128,5 +130,10 @@ class report_graphic_renderable implements renderable {
         $graphreport = new report_graphic();
         $this->mostactivecourses = $graphreport->get_courses_activity();
         $this->mostactiveusers = $graphreport->get_site_users_activity();
+    }
+
+    public function get_course_usage() {
+      $graphreport = new report_graphic();
+      $this->courseusage = $graphreport->get_courses_usage();
     }
 }

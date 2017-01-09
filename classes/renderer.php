@@ -82,4 +82,9 @@ class report_graphic_renderer extends plugin_renderer_base {
         echo $this->renderable->mostactivecourses;
         echo $this->renderable->mostactiveusers;
     }
+
+    public function report_course_usage_chart() {
+      $this->renderable->get_course_usage();
+      echo $this->renderable->courseusage;
+    }
 }

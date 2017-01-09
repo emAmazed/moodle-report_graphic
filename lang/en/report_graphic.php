@@ -23,14 +23,14 @@
  * @copyright  Simey Lameze <simey@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['coursesactivity'] = 'Courses activity (Events by course)';
+$string['coursesactivity'] = 'Courses Activity (Events by Course)';
 $string['event'] = 'Event';
-$string['eventsmosttriggered'] = 'Most triggered events';
-$string['eventsbymonth'] = 'Events by month ({$a})';
-$string['graphic:view'] = 'View events graphic report';
+$string['eventsmosttriggered'] = 'Most Triggered Events';
+$string['eventsbymonth'] = 'Events by Month ({$a})';
+$string['graphic:view'] = 'View Events Graphic Report';
 $string['generate'] = 'Generate';
 $string['menu'] = 'Events Graphic Report';
 $string['percentage'] = 'Percentage';
 $string['pluginname'] = 'Events Graphic Report';
 $string['quantity'] = 'quantity';
-$string['usersactivity'] = 'User activity (Events by user)';
+$string['usersactivity'] = 'User Activity (Events by Top 10 Users)';

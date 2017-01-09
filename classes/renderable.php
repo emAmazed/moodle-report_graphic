@@ -93,7 +93,8 @@ class report_graphic_renderable implements renderable {
             if ($courserecords = $DB->get_records("course", null, "fullname", "id,shortname,fullname,category")) {
                 foreach ($courserecords as $course) {
                     if ($course->id == SITEID) {
-                        $courses[$course->id] = format_string($course->fullname) . ' (' . get_string('site') . ')';
+			// hide site name under course list
+                        $courses[$course->id] = "";
                     } else {
                         $courses[$course->id] = format_string(get_course_display_name_for_list($course));
                     }
@@ -126,5 +127,6 @@ class report_graphic_renderable implements renderable {
     public function get_courses_activity() {
         $graphreport = new report_graphic();
         $this->mostactivecourses = $graphreport->get_courses_activity();
+        $this->mostactiveusers = $graphreport->get_site_users_activity();
     }
 }

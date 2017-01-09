@@ -82,6 +82,7 @@ class report_graphic extends Gcharts {
         $sql = "SELECT l.eventname, COUNT(*) as quant
                   FROM {" . $this->logtable . "} l
                  WHERE l.courseid = ".$this->courseid."
+		AND l.courseid > 1  
                  GROUP BY l.eventname
                  ORDER BY quant DESC";
         $result = $DB->get_records_sql($sql);
@@ -114,6 +115,7 @@ class report_graphic extends Gcharts {
                   FROM {" . $this->logtable . "} l
             INNER JOIN {user} u ON u.id = l.relateduserid
                  WHERE l.courseid = " . $this->courseid . "
+		AND l.courseid > 1  
               GROUP BY l.relateduserid, u.firstname, u.lastname
               ORDER BY quant DESC";
         $result = $DB->get_records_sql($sql);
@@ -173,6 +175,7 @@ class report_graphic extends Gcharts {
             $sql .= "(SELECT COUNT(*) AS quant
                         FROM {" . $this->logtable . "} l
                        WHERE l.courseid = $courseid
+			AND l.courseid > 1 
                          AND timecreated >= $datefrom
                          AND timecreated < $dateto
                          AND u.id = l.userid
@@ -238,6 +241,7 @@ class report_graphic extends Gcharts {
                   FROM {" . $this->logtable . "} l
             INNER JOIN mdl_course c ON c.id = l.courseid
                  WHERE l.courseid = c.id
+		AND l.courseid > 1  
               GROUP BY l.courseid, c.shortname
               ORDER BY l.courseid";
         $result = $DB->get_records_sql($sql);
@@ -255,4 +259,38 @@ class report_graphic extends Gcharts {
 
         return $this->generate($courseactivity);
     }
+
+   /*
+     * Get users that most active over the entire site.
+     *
+     * @return string google charts data.
+     */
+    public function get_site_users_activity() {
+        global $DB;
+
+        $sql = "SELECT l.relateduserid, u.firstname, u.lastname, COUNT(*) as quant
+                  FROM {" . $this->logtable . "} l
+            INNER JOIN {user} u ON u.id = l.relateduserid
+              GROUP BY l.relateduserid, u.firstname, u.lastname
+              ORDER BY quant DESC
+		LIMIT 10";  // to do: make it variable
+        $result = $DB->get_records_sql($sql);
+
+        // Graphic header, must be the first element of the array.
+        $useractivity[0] = array(get_string('user'), get_string('percentage', 'report_graphic'));
+
+        // Organize the data in the required format.
+        $i = 1;
+        foreach ($result as $userdata) {
+            $username = $userdata->firstname . ' ' . $userdata->lastname;
+            $useractivity[$i] = array($username, (int)$userdata->quant);
+            $i++;
+        }
+
+        $this->load(array('graphic_type' => 'BarChart'));
+        $this->set_options(array('title' => get_string('usersactivity', 'report_graphic')));
+
+        return $this->generate($useractivity);
+    }
+
 }

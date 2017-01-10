@@ -84,7 +84,8 @@ class report_graphic extends Gcharts {
       WHERE l.courseid = ".$this->courseid."
       AND l.courseid > 1  
       GROUP BY l.eventname
-      ORDER BY quant DESC";
+      ORDER BY quant DESC
+      LIMIT 10";  // avoid to reach memory limit
     $result = $DB->get_records_sql($sql);
 
     // Graphic header, must be always the first element of the array.
@@ -117,7 +118,8 @@ class report_graphic extends Gcharts {
       WHERE l.courseid = " . $this->courseid . "
       AND l.courseid > 1  
       GROUP BY l.relateduserid, u.firstname, u.lastname
-      ORDER BY quant DESC";
+      ORDER BY quant DESC
+      LIMIT 10";
     $result = $DB->get_records_sql($sql);
 
     // Graphic header, must be the first element of the array.
@@ -188,7 +190,8 @@ class report_graphic extends Gcharts {
       $montharr[$monthabbrev][0] = $monthabbrev;
     }
     $sql .= "FROM {user} u
-      ORDER BY u.id";
+      ORDER BY u.id
+      LIMIT 10";  // avoid max memory
     $result = $DB->get_records_sql($sql);
 
     $usersarr[0] = 'Month';
@@ -300,7 +303,8 @@ class report_graphic extends Gcharts {
   public function get_courses_usage() {
     global $DB;
 
-    $sql = "SELECT distinct course, scormid, userid, fullname as coursename, count(*) totalaccess
+    // courseid must be unique
+    $sql = "SELECT distinct course, userid, fullname as coursename, count(*) totalaccess
       FROM mdl_course c
       INNER JOIN mdl_scorm s
       ON c.id=s.course
@@ -318,7 +322,8 @@ class report_graphic extends Gcharts {
       AND t.timemodified
       BETWEEN UNIX_TIMESTAMP(DATE_SUB(date('2017-02-20'),INTERVAL 1 YEAR))
       AND UNIX_TIMESTAMP(date('2017-02-20'))
-      GROUP BY c.id, userid, scormid
+      GROUP BY c.id, userid
+      LIMIT 10
       ";
     $result = $DB->get_records_sql($sql);
 
@@ -330,11 +335,10 @@ class report_graphic extends Gcharts {
       $i++;
     }
 
-    $this->load(array('graphic_type' => 'PieChart'));
+    $this->load(array('graphic_type' => 'ColumnChart'));
     $this->set_options(array('title' => get_string('courseusage', 'report_graphic')));
 
     return $this->generate($courseusage);
   }
-
 
 }

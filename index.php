@@ -40,4 +40,5 @@ $renderable = new report_graphic_renderable();
 $renderer = $PAGE->get_renderer('report_graphic');
 echo $renderer->render($renderable);
 echo $renderer->report_course_activity_chart();
+echo $renderer->report_course_usage_chart();
 echo $OUTPUT->footer();
